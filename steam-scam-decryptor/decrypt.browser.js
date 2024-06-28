@@ -70,7 +70,7 @@ function copyToClipboard(text) {
       console.error("Failed to copy: ", err);
     });
 }
-let oldData = ""
+let oldData;
 const output = document.getElementById("output");
 output.addEventListener("click", () => copyToClipboard(output.textContent))
 function decrypt() {
@@ -85,8 +85,8 @@ function decrypt() {
       encrypted: encryptedInput
     });
     if (oldData !== decryptedData) {
-      console.log("Refreshed data!")
       oldData = decryptedData
+      console.log("Refreshed data!", oldData, decryptedData)
       const highlightedData = syntaxHighlight(decryptedData);
       output.innerHTML = highlightedData;
       output.classList.remove("invalid");
