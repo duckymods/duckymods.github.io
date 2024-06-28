@@ -10,8 +10,6 @@ function shiftStringCharacters(input, shiftAmount) {
 
 // Function to decrypt data
 function decryptData(encryptedData, timeOffset = 0) {
-  // Check if the data is recent (within 15 seconds)
-
   // Function to remove the shift indicator from the string
   function removeShiftIndicator(input) {
     const midpoint = Math.ceil(input.length / 2 - 1);

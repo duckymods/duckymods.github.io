@@ -64,16 +64,47 @@ body {
 
 .string {
   color: #ce9178;
+  cursor: pointer;
 }
 
 .number {
   color: #b5cea8;
+  cursor: pointer;
 }
 
 .boolean {
   color: #569cd6;
+  cursor: pointer;
 }
 
 .null {
   color: #569cd6;
+  cursor: pointer;
+}
+.key:hover,
+.boolean:hover,
+.number:hover,
+.null:hover,
+.string:hover,
+.value:hover {
+  background-color: #4d4d4d;
+}
+
+.copy-content {
+  background-color: #008cba; /* Blue background */
+  border: none; /* Remove borders */
+  color: white; /* White text */
+  padding: 12px 12px; /* Some padding */
+  text-align: center; /* Centered text */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Make the container inline */
+  font-size: 14px; /* Increase font size */
+  margin: 4px 2px; /* Some margin */
+  cursor: pointer; /* Pointer/hand icon */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s ease; /* Smooth transition */
+  outline: none;
+}
+.copy-content:hover {
+  background-color: #005f73;
 }

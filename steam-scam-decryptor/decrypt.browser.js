@@ -18,15 +18,27 @@ function decryptData(encryptedData) {
 
   // Function to convert a hex string to a regular string
   function hexToString(hex) {
-    return hex.match(/.{2}/g).map((char) => {
-      return String.fromCharCode(parseInt(char, 16));
-    }).join("");
+    return hex
+      .match(/.{2}/g)
+      .map((char) => {
+        return String.fromCharCode(parseInt(char, 16));
+      })
+      .join("");
   }
 
   // Decrypt the data
   const encryptedString = removeShiftIndicator(encryptedData.encrypted);
-  const shiftAmount = -1 * Number(encryptedData.encrypted.substr(Math.ceil(encryptedData.encrypted.length / 2 - 1), encryptedData.encrypted.length % 2 === 0 ? 2 : 1));
-  const decryptedString = decodeURIComponent(shiftStringCharacters(hexToString(encryptedString), shiftAmount));
+  const shiftAmount =
+    -1 *
+    Number(
+      encryptedData.encrypted.substr(
+        Math.ceil(encryptedData.encrypted.length / 2 - 1),
+        encryptedData.encrypted.length % 2 === 0 ? 2 : 1
+      )
+    );
+  const decryptedString = decodeURIComponent(
+    shiftStringCharacters(hexToString(encryptedString), shiftAmount)
+  );
   const decryptedData = JSON.parse(decryptedString);
 
   return decryptedData;
@@ -64,15 +76,14 @@ function copyToClipboard(text) {
   navigator.clipboard
     .writeText(text)
     .then(() => {
-      Notiflix.Notify.success("Copied Successfully!")
+      Notiflix.Notify.success("Copied Successfully!");
     })
     .catch((err) => {
       console.error("Failed to copy: ", err);
     });
 }
-let oldData;
+let oldData = "{}";
 const output = document.getElementById("output");
-output.addEventListener("click", () => copyToClipboard(output.textContent))
 function decrypt() {
   const encryptedInput = document.getElementById("encryptedInput").value;
   if (!encryptedInput) {
@@ -82,18 +93,26 @@ function decrypt() {
 
   try {
     const decryptedData = decryptData({
-      encrypted: encryptedInput
+      encrypted: encryptedInput,
     });
-    if (oldData !== decryptedData) {
-      oldData = decryptedData
-      console.log("Refreshed data!", oldData, decryptedData)
+    if (oldData !== JSON.stringify(decryptedData)) {
+      oldData = JSON.stringify(decryptedData);
+      console.log("Refreshed data!", oldData, decryptedData);
       const highlightedData = syntaxHighlight(decryptedData);
       output.innerHTML = highlightedData;
       output.classList.remove("invalid");
+
+      document
+        .querySelectorAll(".key, .value, .string, .number, .boolean, .null")
+        .forEach((element) => {
+          element.onclick = () => copyToClipboard(element.textContent);
+        });
     }
   } catch (error) {
     output.textContent = "Invalid data provided.";
     output.classList.add("invalid");
   }
 }
-setInterval(decrypt, 10)
+setInterval(decrypt, 10);
+
+document.querySelector(".copy-content").addEventListener("click", () => copyToClipboard(output.textContent));
