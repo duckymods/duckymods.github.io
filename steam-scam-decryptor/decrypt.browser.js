@@ -70,7 +70,7 @@ function copyToClipboard(text) {
       console.error("Failed to copy: ", err);
     });
 }
-
+let oldData = ""
 function decrypt() {
   const encryptedInput = document.getElementById("encryptedInput").value;
   const output = document.getElementById("output");
@@ -83,15 +83,18 @@ function decrypt() {
     const decryptedData = decryptData({
       encrypted: encryptedInput
     });
-    const highlightedData = syntaxHighlight(decryptedData);
-    output.innerHTML = highlightedData;
-    output.classList.remove("invalid");
-
-    document
-      .querySelectorAll(".key, .value, .string, .number, .boolean, .null")
-      .forEach((element) => {
-        element.onclick = () => copyToClipboard(element.textContent);
-      });
+    if (oldData !== decryptedData) {
+      oldData = decryptedData
+      const highlightedData = syntaxHighlight(decryptedData);
+      output.innerHTML = highlightedData;
+      output.classList.remove("invalid");
+  
+      document
+        .querySelectorAll(".key, .value, .string, .number, .boolean, .null")
+        .forEach((element) => {
+          element.onclick = () => copyToClipboard(element.textContent);
+        });
+    }
   } catch (error) {
     output.textContent = "Invalid data provided.";
     output.classList.add("invalid");
