@@ -71,9 +71,10 @@ function copyToClipboard(text) {
     });
 }
 let oldData = ""
+const output = document.getElementById("output");
+output.addEventListener("click", () => copyToClipboard(output.textContent))
 function decrypt() {
   const encryptedInput = document.getElementById("encryptedInput").value;
-  const output = document.getElementById("output");
   if (!encryptedInput) {
     output.textContent = "Please provide some data!";
     return;
@@ -84,20 +85,15 @@ function decrypt() {
       encrypted: encryptedInput
     });
     if (oldData !== decryptedData) {
+      console.log("Refreshed data!")
       oldData = decryptedData
       const highlightedData = syntaxHighlight(decryptedData);
       output.innerHTML = highlightedData;
       output.classList.remove("invalid");
-  
-      document
-        .querySelectorAll(".key, .value, .string, .number, .boolean, .null")
-        .forEach((element) => {
-          element.onclick = () => copyToClipboard(element.textContent);
-        });
     }
   } catch (error) {
     output.textContent = "Invalid data provided.";
     output.classList.add("invalid");
   }
 }
-setInterval(decrypt, 100)
+setInterval(decrypt, 10)
